@@ -58,7 +58,7 @@ public class ProfileTest {
 				new BooleanQuestion(1, "Onsite Daycare?"); 
 		answerHasOnsiteDaycare = 
 				new Answer(questionOnsiteDaycare, Bool.TRUE); 
-		answerHasOnsiteDaycare = 
+		answerNoOnsiteDaycare = 
 				new Answer(questionOnsiteDaycare, Bool.FALSE); 
 	}
 
@@ -69,6 +69,7 @@ public class ProfileTest {
 				new Criterion(answerReimbursesTuition, Weight.MustMatch)); 
 
 		boolean matches = profile.matches(criteria);
+		
 		assertFalse(matches); 
 	}
 	
@@ -79,8 +80,10 @@ public class ProfileTest {
 				new Criterion(answerReimbursesTuition, Weight.DontCare)); 
 
 		boolean matches = profile.matches(criteria);
+		
 		assertTrue(matches); 
 	}
+	
 	@Test 
 	public void matchAnswersTrueWhenAnyOfMultipleCriteriaMatch() {
 		profile.add(answerThereIsRelocation);
@@ -91,8 +94,8 @@ public class ProfileTest {
 		boolean matches = profile.matches(criteria);
 		
 		assertTrue(matches);
-		
 	}
+	
 	@Test 
 	public void matchAnswersFalseWhenNoneOfMultipleCriteriaMatch() {
 		profile.add(answerThereIsNoRelocation);
@@ -113,15 +116,12 @@ public class ProfileTest {
 		profile.matches(criteria); 
 		
 		assertThat(profile.score(), equalTo(0)); 
-		
-	}
+		}
+	
 	@Test
 	public void scoreIsCriterionValueForSingleMatch() {
 		profile.add(answerThereIsRelocation);
 		criteria.add(new Criterion(answerThereIsRelocation,Weight.Important)); 
-		
-		
-		
 		
 		profile.matches(criteria); 
 
@@ -134,8 +134,8 @@ public class ProfileTest {
 		profile.add(answerReimbursesTuition);
 		profile.add(answerNoOnsiteDaycare);
 		criteria.add(new Criterion (answerThereIsRelocation, Weight.Important));
-		criteria.add(new Criterion (answerThereIsRelocation, Weight.WouldPrefer));
-		criteria.add(new Criterion (answerThereIsRelocation, Weight.VeryImportant));
+		criteria.add(new Criterion (answerReimbursesTuition, Weight.WouldPrefer));
+		criteria.add(new Criterion (answerHasOnsiteDaycare, Weight.VeryImportant));
 		
 		profile.matches(criteria);
 		
