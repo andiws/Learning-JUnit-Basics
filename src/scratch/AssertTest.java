@@ -1,6 +1,12 @@
 package scratch;
 
+import org.junit.Test; 
 import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.*;
+import java.io.*; 
+import java.util.*;
+
+
 
 public class AssertTest {
 	private Account account; 
@@ -22,6 +28,7 @@ public class AssertTest {
 		int initialBalance = account.getBlance(); 
 		account.deposit(100);
 		assertTrue(account.getBalance() > initialBalance);
+		assertThat(account.getBalance(), equalTo(100)); 
 	}
 
 }
