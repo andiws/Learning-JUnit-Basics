@@ -28,10 +28,10 @@ public class Answer {
 	
 	@Override 
 	public String toString() {
-		return String.format("%s %s, question.getText(), question.getAnswerChoice(i)); 
+		return String.format("%s %s", question.getText(), question.getAnswerChoice(i)); 
 	}
 	
-	public booelan match(int expected) {
+	public boolean match(int expected) {
 		return question.match(expected,i);
 	}
 		

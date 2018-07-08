@@ -1,3 +1,11 @@
+/*
+ * 
+ * 
+ * 
+ * 
+ * 
+ * 
+ */
 package iloveyouboss;
 
 import org.junit.*;
@@ -20,7 +28,6 @@ public class ProfileTest {
 	private Answer answerNoOnsiteeDaycare;
 	private Answer answerHasOnsiteDaycare; 
 	
-	
 	@Before
 	public void createProfile() {
 		profile = new Profile("Bull Hockey, Inc."); 
@@ -40,12 +47,12 @@ public class ProfileTest {
 		answerThereIsNoRelocation = 
 				new Answer(questionIsThereRelocation,Bool.FALSE);
 		
-		questionReimbursesTuitioin = 
+		questionReimbursesTuition = 
 				new BooleanQuestion(1, "Reimburses tuition?");
-		answerReimburseTuition = 
-				new Answer(questionReimbursesTuition, Bool.TRUE); 
 		answerReimbursesTuition = 
-				new Answser(questionReimbursesTuition, Bool.FALSE); 
+				new Answer(questionReimbursesTuition, Bool.TRUE); 
+		answerDoesNotReimburseTuition = 
+				new Answer(questionReimbursesTuition, Bool.FALSE); 
 		
 		questionOnsiteDaycare = 
 				newBooleanQuestion(1, "Onsite Daycare?"); 
