@@ -17,7 +17,7 @@ public class ProfileTest {
 	private Criteria criteria; 
 	
 	private Question questionReimbursesTuition; 
-	private Answer answerReimbursesTution;
+	private Answer answerReimbursesTuition;
 	private Answer answerDoesNotReimburseTuition; 
 	
 	private Question questionIsThereRelocation;
@@ -25,7 +25,7 @@ public class ProfileTest {
 	private Answer answerThereIsNoRelocation; 
 	
 	private Question questionOnsiteDaycare; 
-	private Answer answerNoOnsiteeDaycare;
+	private Answer answerNoOnsiteDaycare;
 	private Answer answerHasOnsiteDaycare; 
 	
 	@Before
@@ -55,18 +55,18 @@ public class ProfileTest {
 				new Answer(questionReimbursesTuition, Bool.FALSE); 
 		
 		questionOnsiteDaycare = 
-				newBooleanQuestion(1, "Onsite Daycare?"); 
+				new BooleanQuestion(1, "Onsite Daycare?"); 
 		answerHasOnsiteDaycare = 
-				new Answer(questionOnsiteDay, Bool.TRUE); 
+				new Answer(questionOnsiteDaycare, Bool.TRUE); 
 		answerHasOnsiteDaycare = 
-				new Answer(questionOnsiteDay, Bool.FALSE); 
+				new Answer(questionOnsiteDaycare, Bool.FALSE); 
 	}
 
 	@Test
 	public void matchAnswersFalseWhenMustMatchCriteriaNotMet() {
 		profile.add(answerDoesNotReimburseTuition);
 		criteria.add(
-				new Criterion(answerReimbursesTuition, Weight.MustMatch); 
+				new Criterion(answerReimbursesTuition, Weight.MustMatch)); 
 
 		boolean matches = profile.matches(criteria);
 		assertFalse(matches); 
@@ -76,7 +76,7 @@ public class ProfileTest {
 	public void matchAnswersTrueForAnyDontCareCriteria() {
 		profile.add(answerDoesNotReimburseTuition);
 		criteria.add(
-				new Criterion(answerReimbursesTuition, Weight.DontCare); 
+				new Criterion(answerReimbursesTuition, Weight.DontCare)); 
 
 		boolean matches = profile.matches(criteria);
 		assertTrue(matches); 
@@ -85,7 +85,7 @@ public class ProfileTest {
 	public void matchAnswersTrueWhenAnyOfMultipleCriteriaMatch() {
 		profile.add(answerThereIsRelocation);
 		profile.add(answerDoesNotReimburseTuition);
-		criteria.add(new Criterion(answerThereIsRelocatioin, Weight.Important));
+		criteria.add(new Criterion(answerThereIsRelocation, Weight.Important));
 		criteria.add(new Criterion(answerReimbursesTuition, Weight.Important));
 		
 		boolean matches = profile.matches(criteria);
@@ -97,7 +97,7 @@ public class ProfileTest {
 	public void matchAnswersFalseWhenNoneOfMultipleCriteriaMatch() {
 		profile.add(answerThereIsNoRelocation);
 		profile.add(answerDoesNotReimburseTuition);
-		criteria.add(new Criterion(answerThereIsRelocatioin, Weight.Important));
+		criteria.add(new Criterion(answerThereIsRelocation, Weight.Important));
 		criteria.add(new Criterion(answerReimbursesTuition, Weight.Important));
 		
 		boolean matches = profile.matches(criteria);
@@ -120,12 +120,14 @@ public class ProfileTest {
 		profile.add(answerThereIsRelocation);
 		criteria.add(new Criterion(answerThereIsRelocation,Weight.Important)); 
 		
+		
+		
+		
 		profile.matches(criteria); 
-		
-		assertThat(profile.score(), equalTo(Weight.Important.getValue()); 
-		
-	}
 
+		assertThat(profile.score(), equalTo(Weight.Important.getValue())); 
+	}
+	
 	@Test
 	public void scoreAccumulatesCriterionValuesForMatches() {
 		profile.add(answerThereIsRelocation);
@@ -141,5 +143,5 @@ public class ProfileTest {
 		assertThat(profile.score(), equalTo(expectedScore));
 	}
 	//TODO: missing functionality -- what if there is no match profile answer for a criterion? 
-	//Add another answer - either "other" or textbox 
+	//Add another answer - either "other" or  
 }
