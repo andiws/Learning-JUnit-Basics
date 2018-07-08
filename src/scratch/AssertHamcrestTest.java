@@ -24,7 +24,7 @@ public class AssertHamcrestTest {
 	public void test() {
 		assertThat(2.32*3, equalTo(6.96));	
 		}
-	assertTrue(Math.abs((2.32*3)-6.96) < 0.0005); 
-	
-	assertTrue(2.32*3, closeTo(6.96,0.0005)); 
+//	assertTrue(Math.abs((2.32*3)-6.96) < 0.0005); 
+//	
+//	assertTrue(2.32*3, closeTo(6.96,0.0005)); 
 }
