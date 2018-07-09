@@ -10,145 +10,140 @@ package scratch;
 
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
-import java.io.*; 
+import java.io.*;
 import java.util.*;
 import org.junit.*;
 import static scratch.PointMatcher.isNear;
 
-import org.junit.rules*; 
-
+import org.junit.rules;
+import org.junit.rules.ExpectedException;*;
 
 public class AssertTest {
-	
+
 	class InsufficienctFundsException extends RuntimeException {
 		public InsufficientFundsException(String message) {
 			super(message); 
 		}
-		
-		private static final long serialVersionUID = 1L; 
+
+		private static final long serialVersionUID = 1L;
 	}
 
 	class Account {
-		int balance; 
+		int balance;
 		String name;
-		
-		Account (String name){
+
+		Account(String name) {
 			this.name = name;
 		}
-		
+
 		void deposit(int dollars) {
-			balance += dollars; 
+			balance += dollars;
 		}
-		
-		void withdraw(int dollars ) {
+
+		void withdraw(int dollars) {
 			if (balance < dollars) {
-				throw new InsufficientFundsException("balance only" + balance); 
+				throw new InsufficientFundsException("balance only" + balance);
 			}
-			balance -= dollars; 
+			balance -= dollars;
 		}
-		
+
 		public String getName() {
 			return name;
 		}
-		
+
 		public int getBalance() {
-			return balance; 
+			return balance;
 		}
-		
+
 		public boolean hasPositiveBalance() {
 			return balance > 0;
 		}
 	}
-	
-	class Customer{
-		List <Account> accounts = new ArrayList<>(); 
-		
+
+	class Customer {
+		List<Account> accounts = new ArrayList<>();
+
 		void add(Account account) {
-			accounts.add(account); 
+			accounts.add(account);
 		}
-		
-		Iterator<Account> geetAccounts(){
-			return accounts.iterator(); 
+
+		Iterator<Account> geetAccounts() {
+			return accounts.iterator();
 		}
 	}
 
-private Account account; 
+	private Account account;
 
-@Before 
-public void createAccount() {
-	account = new Account("an account name"); 
-}
-
-
-@Test
-public void hasPositiveBalance() {
-	account.deposit(50);
-	assertTrue(account.hasPositiveBalance()); 
-}
-
-
-@Test 
-public void depositIncreasesBalance() {
-	int initialBalance = account.getBalance(); 
-	account.deposit(100); 
-	assertTrue(account.getBalance() > initialBalance); 
-	assertTrue(account.getBalance(), equalsTo(100)); 
+	@Before
+	public void createAccount() {
+		account = new Account("an account name");
 	}
 
+	@Test
+	public void hasPositiveBalance() {
+		account.deposit(50);
+		assertTrue(account.hasPositiveBalance());
+	}
 
-@Test
-public void depositIncreasesBalance_hamcrestAssertTrue() {
-	account.deposit(50);
-	assertThat(account.getBalance() > 0, is(true)); 
-}
+	@Test
+	public void depositIncreasesBalance() {
+		int initialBalance = account.getBalance();
+		account.deposit(100);
+		assertTrue(account.getBalance() > initialBalance);
+		assertTrue(account.getBalance(), equalsTo(100));
+	}
 
-@Ignore
-@ExpectToFail
-@Test
-public void comparesArraysFailing() {
-	assertThat(new String[] {"a","b","c"}, equalTo(new String[] {"a","b"}));
-}
+	@Test
+	public void depositIncreasesBalance_hamcrestAssertTrue() {
+		account.deposit(50);
+		assertThat(account.getBalance() > 0, is(true));
+	}
 
-@Test
-public void comparesArraysPassing() {
-	assertThat(new String[] {"a","b"}, equalTo(new String[] {"a","b"}));
-}
+	@Ignore
+	@ExpectToFail
+	@Test
+	public void comparesArraysFailing() {
+		assertThat(new String[] { "a", "b", "c" }, equalTo(new String[] { "a", "b" }));
+	}
 
-@Ignore
-@ExpectToFail
-@Test
-public void comparesCollectionsFailing () {
-	assertThat(Arrays.asList(new String [] {"a"}), 
-			equalTo(Arrays.asList(new String [] {"a"}))); 
-}
+	@Test
+	public void comparesArraysPassing() {
+		assertThat(new String[] { "a", "b" }, equalTo(new String[] { "a", "b" }));
+	}
+
+	@Ignore
+	@ExpectToFail
+	@Test
+	public void comparesCollectionsFailing() {
+		assertThat(Arrays.asList(new String[] { "a" }), equalTo(Arrays.asList(new String[] { "a" })));
+	}
 
 @Test
 public void comparesCollectionsPassing () {
 	assertThat(Arrays.asList(new String [] {"a"}), 
-			equalTo(Arrays.asList(new String [] {"a"}))); 
-
+			equalTo(Arrays.asList(new String [] {"a"})));
 
 	@Ignore
 	@Test
 	public void testWithWorthlessAssertionComment() {
 		account.deposit(50);
-		assertThat("account balance is 100", account.getBalance(), equalTo(50)); 
+		assertThat("account balance is 100", account.getBalance(), equalTo(50));
 	}
 
 	@Ignore
 	@ExpectToFail
 	@Test
 	public void assertFailure() {
-		assertTrue(account.getName().startsWith("xyz")); 
+		assertTrue(account.getName().startsWith("xyz"));
 	}
+
 	@Ignore
 	@ExpectToFail
 	@Test
-	public void matchesFailure () {
-		assertThat(account.getName(), startsWith("xyz")); 
+	public void matchesFailure() {
+		assertThat(account.getName(), startsWith("xyz"));
 	}
-	
-	
+
 	@Test
 	public void variousMatcherTests() {
 		Account account = new Account("my big fat acct"); 
@@ -168,39 +163,111 @@ public void comparesCollectionsPassing () {
 		assertThat(account.getName(), is(notnullValue()); //not helpful
 		assertThat(account.getName(), equalTo("my big fat acct"));
 	}
-	
+
 	@Test
 	public void sameInstance() {
-		Account a = new Account ("a"); 
-		Account aPrime = new Account ("a"); 
-		//TODO why needs to be fully qualified?
+		Account a = new Account("a");
+		Account aPrime = new Account("a");
+		// TODO why needs to be fully qualified?
 		assertThat(a, not(org.hamcrest.CoreMatchers.sameInstance(aPrime)));
 	}
-	
+
 	@Test
 	public void moreMatcherTests() {
-		Account account = new Account (null); 
-		assertThat(account.getName(), is(nullValue())); 
+		Account account = new Account(null);
+		assertThat(account.getName(), is(nullValue()));
 	}
-	
+
 	@Test
 	@SupressWarnings("unchecked")
-	public void items () {
-		List<String> names = new ArrayList<>(); 
-		names.add("Moe"); 
+	public void items() {
+		List<String> names = new ArrayList<>();
+		names.add("Moe");
 		names.add("Larry");
 		names.add("Curly");
-		
+
 		assertThat(names, hasItem("Curly"));
-		
+
 		assertThat(names, hasItems("Curly", "Moe"));
-		
+
 		assertThat(names, hasItem(endsWith("y")));
-		
-		assertThat(names, hasItems(endsWith("y"), startsWith("C"))); // warning 
+
+		assertThat(names, hasItems(endsWith("y"), startsWith("C"))); // warning
 
 		assertThat(names, not(everyItem(endsWith("y"))));
 	}
-	
+
+	@Test
+	@ExpectToFail
+	@Ignore
+	public void location() {
+		Point point = new Point(4, 5);
+		/*
+		 * 
+		 * 
+		 * 
+		 */
+		assertThat(point, isNear(3.6, 5.1));
+	}
+
+	@Test
+	@ExpectToFail
+	@Ignore
+	public void classicAssertions() {
+		Account account = new Account("account namex");
+		assertEquals("account name", account.getName());
+	}
+
+	@Test(expected = InsuffcientFundsException.class)
+	public void throwsWhenWithdrawingTooMuch() {
+		account.withdraw(100);
+	}
+
+	@Test(expected = InsuffcientFundsException.class)
+	public void throwsWhenWithdrawingTooMuch() {
+		account.withdraw(100);
+		fail();
+	}catch(
+
+	InsufficientFundsException expected)
+	{
+		assertThat(expected.getMessage(), equalTo("balance only 0"));
+	}
 }
 
+	@Test
+	public void readsFromTestFile() throws IOException {
+		String filename = "test.txt";
+		BufferedWriter writer = new BufferedWriter(new FileWriter(filename));
+		writer.write("test data");
+		writer.close();
+		// ...
+	}
+
+	@After
+	public void deleteForReadsFromTestFile() {
+		new File("test.txt").delete();
+	}
+
+	@Test
+	@Ignore("dont forget me!")
+	public void somethingWeCannotHandleRightNow() {
+		// ....
+	}
+
+	@Rule
+	public ExpectedException thrown = ExpectedException.none();
+
+	@Test
+	public void exceptionRule() {
+		thrown.expect(InsufficientFundsException.class);
+		thrown.expectMessage("balance only 0");
+
+		account.withdraw(100);
+	}
+
+	@Test
+	public void doubles() {
+		assertEquals(9.7, 10.0 - 0.03, 0.005);
+	}
+}
