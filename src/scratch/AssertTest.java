@@ -15,13 +15,13 @@ import java.util.*;
 import org.junit.*;
 import static scratch.PointMatcher.isNear;
 
-import org.junit.rules;
-import org.junit.rules.ExpectedException;*;
+import org.junit.rules.*;
+
 
 public class AssertTest {
 
 	class InsufficienctFundsException extends RuntimeException {
-		public InsufficientFundsException(String message) {
+		public InsufficienctFundsException(String message) {
 			super(message); 
 		}
 
@@ -90,7 +90,7 @@ public class AssertTest {
 		int initialBalance = account.getBalance();
 		account.deposit(100);
 		assertTrue(account.getBalance() > initialBalance);
-		assertTrue(account.getBalance(), equalsTo(100));
+		assertThat(account.getBalance(), equalTo(100));
 	}
 
 	@Test
@@ -122,6 +122,7 @@ public class AssertTest {
 public void comparesCollectionsPassing () {
 	assertThat(Arrays.asList(new String [] {"a"}), 
 			equalTo(Arrays.asList(new String [] {"a"})));
+}
 
 	@Ignore
 	@Test
@@ -179,7 +180,7 @@ public void comparesCollectionsPassing () {
 	}
 
 	@Test
-	@SupressWarnings("unchecked")
+	@SuppressWarnings("unchecked")
 	public void items() {
 		List<String> names = new ArrayList<>();
 		names.add("Moe");
