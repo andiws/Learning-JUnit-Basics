@@ -36,6 +36,16 @@ public class Answer {
 	}
 		
 	public boolean match(Answer otherAnswer) {
+		//The passing implementation in matches() is a simple guard clause: return false
+		//if the passed Answer reference is null
+		if (otherAnswer == null) return false;
+		
 		return question.match(i,otherAnswer.i); 
+		
+	}
+
+	public void put(String questionText, Answer answer) {
+		// TODO Auto-generated method stub
+		
 	}
 }
