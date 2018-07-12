@@ -1,43 +1,41 @@
+/***
+ * Excerpted from "Pragmatic Unit Testing in Java with JUnit",
+ * published by The Pragmatic Bookshelf.
+ * Copyrights apply to this code. It may not be used to create training material, 
+ * courses, books, articles, and the like. Contact us if you are in doubt.
+ * We make no guarantees that this code is fit for any purpose. 
+ * Visit http://www.pragmaticprogrammer.com/titles/utj2 for more book information.
+***/
 package iloveyouboss;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class Profile {
-	/*to make this test pass are small. Implement an add(Answer) method,
-	and have matches() return true as long as the Profile class holds a reference to
-	an Answer object:
-	
-	
-	*/
-	private Map<String, Answer> answers = new HashMap<>();
-	
-	private Answer getMatchingProfileAnswer(Criterion criterion) {
-		return answers.get(criterion.getAnswer().getQuestionText()); 
-	}
-	
+   private Map<String,Answer> answers = new HashMap<>();
+   
+   private Answer getMatchingProfileAnswer(Criterion criterion) {
+      return answers.get(criterion.getAnswer().getQuestionText());
+   }
 
-	public boolean matches(Criterion criterion) {
-		
-		Answer answer = getMatchingProfileAnswer(criterion);
-		return answer.match(criterion.getAnswer());
-	}
-	
-	
-	//This allows doesNotMatchWhenNoneOfMultipleCriteriaMatch() test to pass 
-	public boolean matches(Criteria criteria) {
-		return false;
-		}	
 
-	public void add(Answer answer) {
-		answer.put(answer.getQuestionText(),answer); 
-	}
+   public boolean matches(Criteria criteria) {
+      boolean matches = false;
+      for (Criterion criterion: criteria) {
+         if (matches(criterion))
+            matches = true;
+         else if (criterion.getWeight() == Weight.MustMatch)
+            return false;
+      }
+      return matches;
+   }
 
-	//The implementation requires a loop to iterate through each Criterion in Criteria:
-	public boolean matches(Criteria criteria) {
-		 for (Criterion criterion: criteria)
-		 if (matches(criterion))
-		return true;
-		return false;
-		}
+   public boolean matches(Criterion criterion) {
+      return 
+         criterion.getWeight() == Weight.DontCare ||
+         criterion.getAnswer().match(getMatchingProfileAnswer(criterion));
+   }
+
+   public void add(Answer answer) {
+      answers.put(answer.getQuestionText(), answer);
+   }
 }
