@@ -9,6 +9,7 @@
 package iloveyouboss;
 
 public class Criterion implements Scoreable {
+	
 	private Weight weight; 
 	private Answer answer; 
 	private int score; 
@@ -18,7 +19,7 @@ public class Criterion implements Scoreable {
 		this.weight = weight; 
 	}
 	
-	public Answer getAnswer() {return answer; }
+	public Answer getAnswer() {return answer;}
 	public Weight getWeight() {return weight;}
 	
 	public void setScore(int score) {this.score = score;}

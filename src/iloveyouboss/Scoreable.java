@@ -1,6 +1,6 @@
 package iloveyouboss;
 
-@FunctionalInterface
+//@FunctionalInterface
 public interface Scoreable {
 
 	int getScore ();  
