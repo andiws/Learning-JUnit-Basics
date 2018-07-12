@@ -25,4 +25,18 @@ public class ProfileTest {
 		
 		assertFalse(result); 
 	}
+	@Test
+	public void matchesWhenProfileContainsSameAnswerfromCriterion() {
+		Profile profile = new Profile();
+		Question question = new BooleanQuestion(1, "Relocation package?");
+		Answer answer = new Answer(question, Bool.TRUE); 
+		profile.add(answer); 
+		Criterion criterion = 
+				new Criterion(answer, Weight.Important); 
+
+		
+		boolean result = profile.matches(criterion); 
+		
+		assertTrue(result); 
+	}
 }
