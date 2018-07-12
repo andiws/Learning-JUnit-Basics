@@ -4,7 +4,7 @@ public class Profile {
 
 	public boolean matches(Criterion criterion) {
 		// TODO Auto-generated method stub
-		return true;
+		return false;
 	}
 
 }
