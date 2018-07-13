@@ -16,7 +16,13 @@ public class BooleanQuestion extends Question {
 	@Override
 	public boolean match(int expected, int actual) {
 		// TODO Auto-generated method stub
-		return expected == actual;
+		
+		if (expected == actual)
+			return true;
+		else 
+			return false;
+		
+		//return expected == actual;
 	}
 
 }
