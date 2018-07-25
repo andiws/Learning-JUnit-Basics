@@ -11,9 +11,7 @@ public class ScoreCollectionTest {
 	public void answersArithmeticMeanOfTwoNubers() {
 		//Arrange
 		ScoreCollection collection = new ScoreCollection (); 
-		collection.add(
-				()-> 5				
-				); 
+		collection.add(()-> 5); 
 		collection.add(() -> 7);
 		
 		//Act or "execute" method

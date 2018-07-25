@@ -13,7 +13,12 @@ import java.util.*;
 public class Profile {
    private Map<String,Answer> answers = new HashMap<>();
    
-   private Answer getMatchingProfileAnswer(Criterion criterion) {
+   public Profile(String name) {
+	// TODO Auto-generated constructor stub
+}
+
+
+private Answer getMatchingProfileAnswer(Criterion criterion) {
       return answers.get(criterion.getAnswer().getQuestionText());
    }
 
@@ -38,4 +43,16 @@ public class Profile {
    public void add(Answer answer) {
       answers.put(answer.getQuestionText(), answer);
    }
+
+
+public String getId() {
+	// TODO Auto-generated method stub
+	return null;
+}
+
+
+public MatchSet getMatchSet(Criteria criteria) {
+	// TODO Auto-generated method stub
+	return null;
+}
 }
