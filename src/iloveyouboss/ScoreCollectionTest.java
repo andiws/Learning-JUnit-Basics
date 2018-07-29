@@ -1,3 +1,11 @@
+/***
+ * Excerpted from "Pragmatic Unit Testing in Java with JUnit",
+ * published by The Pragmatic Bookshelf.
+ * Copyrights apply to this code. It may not be used to create training material, 
+ * courses, books, articles, and the like. Contact us if you are in doubt.
+ * We make no guarantees that this code is fit for any purpose. 
+ * Visit http://www.pragmaticprogrammer.com/titles/utj2 for more book information.
+***/
 package iloveyouboss;
 
 import static org.junit.Assert.*;
@@ -5,57 +13,39 @@ import static org.hamcrest.CoreMatchers.*;
 import org.junit.*;
 
 public class ScoreCollectionTest {
+   private ScoreCollection collection;
 
-	@Test
+   @Before
+   public void create() {
+      collection = new ScoreCollection();
+   }
 
-	public void answersArithmeticMeanOfTwoNubers() {
-		//Arrange
-		ScoreCollection collection = new ScoreCollection (); 
-		collection.add(()-> 5); 
-		collection.add(() -> 7);
-		
-		//Act or "execute" method
-		int actualResult = collection.arithmeticMean();
-		
-		//Assert
-		assertThat(actualResult, equalTo(6)); 
-		
-	}
-	
-	@Test
-	public void answersArithmeticMeanOfFourNumbers() {
-		
+   @Test
+   public void answersArithmeticMeanOfTwoNumbers() {
+      collection.add(() -> 5);
+      collection.add(() -> 7);
+      
+      int actualResult = collection.arithmeticMean();
+      
+      assertThat(actualResult, equalTo(6));
+   }
+   
+   @Test(expected=IllegalArgumentException.class)
+   public void throwsExceptionWhenAddingNull() {
+      collection.add(null);
+   }
+   
+   @Test
+   public void answersZeroWhenNoElementsAdded() {
+      assertThat(collection.arithmeticMean(), equalTo(0));
+   }
 
-	ScoreCollection collection = new ScoreCollection (); 
-	collection.add(()-> 8); 
-	collection.add(() -> 12);
-	collection.add(()-> 8); 
-	collection.add(() -> 12);
-	
-	//Act or "execute" method
-	int actualResult = collection.arithmeticMean();
-	
-	//Assert
-	assertThat(actualResult, equalTo(10)); 
-	
+   @Test
+   public void doesNotProperlyHandleIntegerOverflow() {
+      collection.add(() -> Integer.MAX_VALUE); 
+      collection.add(() -> 1); 
+      
+      assertTrue(collection.arithmeticMean() < 0);
+   }
 }
 
-	@Test
-	public void answersArithmeticMeanOfNegativeNumbers() {
-		
-
-	ScoreCollection collection = new ScoreCollection (); 
-	collection.add(()-> -10); 
-	collection.add(() -> 2);
-	collection.add(()-> -10); 
-	collection.add(() -> 2);
-	
-	//Act or "execute" method
-	int actualResult = collection.arithmeticMean();
-	
-	//Assert
-	assertThat(actualResult, equalTo(-4)); 
-	
-}
-	
-}

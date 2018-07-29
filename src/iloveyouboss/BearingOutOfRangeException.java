@@ -8,6 +8,6 @@
 ***/
 package iloveyouboss;
 
-public interface MatchListener {
-   void foundMatch(Profile profile, MatchSet matchSet);
+public class BearingOutOfRangeException extends RuntimeException {
+   private static final long serialVersionUID = 1L;
 }

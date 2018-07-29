@@ -9,50 +9,46 @@
 package iloveyouboss;
 
 import java.util.*;
+import java.util.function.*;
+import java.util.stream.*;
 
 public class Profile {
+	
+	public static void main (String [] args) {
+	
+		System.out.println("Hello User"); 
+	}
    private Map<String,Answer> answers = new HashMap<>();
+   private String id;
+
+   public Profile(String id) {
+      this.id = id;
+   }
    
-   public Profile(String name) {
-	// TODO Auto-generated constructor stub
-}
-
-
-private Answer getMatchingProfileAnswer(Criterion criterion) {
-      return answers.get(criterion.getAnswer().getQuestionText());
+   public String getId() {
+      return id;
    }
-
-
-   public boolean matches(Criteria criteria) {
-      boolean matches = false;
-      for (Criterion criterion: criteria) {
-         if (matches(criterion))
-            matches = true;
-         else if (criterion.getWeight() == Weight.MustMatch)
-            return false;
-      }
-      return matches;
-   }
-
-   public boolean matches(Criterion criterion) {
-      return 
-         criterion.getWeight() == Weight.DontCare ||
-         criterion.getAnswer().match(getMatchingProfileAnswer(criterion));
+   
+   public Map<String,Answer> getAnswers() {
+      return answers;
    }
 
    public void add(Answer answer) {
       answers.put(answer.getQuestionText(), answer);
    }
+   
+   public MatchSet getMatchSet(Criteria criteria) {
+      return new MatchSet(id, answers, criteria);
+   }
 
+   @Override
+   public String toString() {
+     return id;
+   }
 
-public String getId() {
-	// TODO Auto-generated method stub
-	return null;
-}
-
-
-public MatchSet getMatchSet(Criteria criteria) {
-	// TODO Auto-generated method stub
-	return null;
-}
+   public List<Answer> find(Predicate<Answer> pred) {
+      return answers.values().stream()
+            .filter(pred)
+            .collect(Collectors.toList());
+   }
 }

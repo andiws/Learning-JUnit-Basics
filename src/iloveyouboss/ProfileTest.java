@@ -8,110 +8,33 @@
 ***/
 package iloveyouboss;
 
-import org.junit.*;
+import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
+import java.util.*;
+import org.junit.*;
 
 public class ProfileTest {
-   // ...
    private Profile profile;
-   private BooleanQuestion questionIsThereRelocation;
-   private Answer answerThereIsRelocation;
-   private Answer answerThereIsNotRelocation;
-   private BooleanQuestion questionReimbursesTuition;
-   private Answer answerDoesNotReimburseTuition;
-   private Answer answerReimbursesTuition;
-   private Criteria criteria;
-   
-   @Before
-   public void createCriteria() {
-      criteria = new Criteria();
-   }
 
    @Before
    public void createProfile() {
-      profile = new Profile();
+      profile = new Profile("");
    }
-   
-   @Before
-   public void createQuestionsAndAnswers() {
-      questionIsThereRelocation = 
-            new BooleanQuestion(1, "Relocation package?");
-      answerThereIsRelocation = 
-            new Answer(questionIsThereRelocation, Bool.TRUE);
-      answerThereIsNotRelocation = 
-            new Answer(questionIsThereRelocation, Bool.FALSE);
 
-      questionReimbursesTuition = new BooleanQuestion(1, "Reimburses tuition?");
-      answerDoesNotReimburseTuition = 
-         new Answer(questionReimbursesTuition, Bool.FALSE);
-      answerReimbursesTuition = 
-         new Answer(questionReimbursesTuition, Bool.TRUE);
+   int[] ids(Collection<Answer> answers) {
+      return answers.stream()
+            .mapToInt(a -> a.getQuestion().getId()).toArray();
    }
-  
-   @Test
-   public void matchesWhenProfileContainsMatchingAnswer() {
-      profile.add(answerThereIsRelocation);
-      Criterion criterion = 
-            new Criterion(answerThereIsRelocation, Weight.Important);
 
-      assertTrue(profile.matches(criterion));
-   }
-   
    @Test
-   public void doesNotMatchWhenNoMatchingAnswer() {
-      profile.add(answerThereIsNotRelocation);
-      Criterion criterion = 
-            new Criterion(answerThereIsRelocation, Weight.Important);
+   public void findsAnswersBasedOnPredicate() {
+      profile.add(new Answer(new BooleanQuestion(1, "1"), Bool.FALSE));
+      profile.add(new Answer(new PercentileQuestion(2, "2", new String[] {}), 0));
+      profile.add(new Answer(new PercentileQuestion(3, "3", new String[] {}), 0));
       
-      assertFalse(profile.matches(criterion));
-   }
-
-   @Test
-   public void matchesWhenContainsMultipleAnswers() {
-      profile.add(answerThereIsRelocation);
-      profile.add(answerDoesNotReimburseTuition);
-      Criterion criterion = 
-            new Criterion(answerThereIsRelocation, Weight.Important);
+      List<Answer> answers = 
+            profile.find(a -> a.getQuestion().getClass() == PercentileQuestion.class);
       
-      assertTrue(profile.matches(criterion));
+      assertThat(ids(answers), equalTo(new int[] { 2, 3 }));
    }
-
-   @Test
-   public void doesNotMatchWhenNoneOfMultipleCriteriaMatch() {
-      profile.add(answerDoesNotReimburseTuition);
-      criteria.add(new Criterion(answerThereIsRelocation, Weight.Important));
-      criteria.add(new Criterion(answerReimbursesTuition, Weight.Important));
-      
-      assertFalse(profile.matches(criteria));
-   }
-
-   @Test
-   public void matchesWhenAnyOfMultipleCriteriaMatch() {
-      profile.add(answerThereIsRelocation);
-      criteria.add(new Criterion(answerThereIsRelocation, Weight.Important));
-      criteria.add(new Criterion(answerReimbursesTuition, Weight.Important));
-      
-      assertTrue(profile.matches(criteria));
-   }
-   
-   @Test
-   public void doesNotMatchWhenAnyMustMeetCriteriaNotMet() {
-      profile.add(answerThereIsRelocation);
-      profile.add(answerDoesNotReimburseTuition);
-      criteria.add(new Criterion(answerThereIsRelocation, Weight.Important));
-      criteria.add(new Criterion(answerReimbursesTuition, Weight.MustMatch));
-      
-      assertFalse(profile.matches(criteria));
-   }
-
-   @Test
-   public void matchesWhenCriterionIsDontCare() {
-      profile.add(answerDoesNotReimburseTuition);
-      Criterion criterion = 
-         new Criterion(answerReimbursesTuition, Weight.DontCare);
-      
-      assertTrue(profile.matches(criterion));
-   }
-   
-
 }
